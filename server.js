@@ -12,13 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 const dbURI =
-  "mongodb+srv://" +
-  process.env.DBUSERNAME +
-  ":" +
-  process.env.DBPASSWORD +
-  "@" +
-  process.env.CLUSTER +
-  ".mongodb.net/";
+  "mongodb+srv://joni:joni1@cluster0.fjnu1bc.mongodb.net/";  
 console.log(dbURI);
 
 mongoose
@@ -49,6 +43,19 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.render("index", { layout: false });
 });
+app.get("/likedcats", async (req, res) => {
+  try {
+    const likedCatsData = await likedCats.find(); // Retrieve all liked cats from the database
+    console.log("Liked Cats:", likedCatsData); // Log the retrieved data to the console
+    res.render("likedcats", { cats: likedCatsData, layout: false }); // Render the 'likedcats' view without a layout
+  } catch (error) {
+    console.error("Error retrieving liked cats:", error);
+    res.status(500).json({ error: "Failed to retrieve liked cats" });
+  }
+});
+
+
+
 
 // Sample endpoint to fetch cat images
 app.get("/api/cats", async (req, res) => {

@@ -1,3 +1,35 @@
+/* Style for the header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px 20px;
+    z-index: 1000;
+}
+
+.header h1 {
+    margin: 0;
+    color: white;
+}
+
+.header nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.header nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.header nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
 /* Style for mobile phone container */
 .mobile-container {
     position: relative;

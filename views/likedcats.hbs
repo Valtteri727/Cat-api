@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liked Cats</title>
+    <style>
+        /* Basic styling for the cat blocks */
+        .cat-block {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liked Cats</h1>
+
+    <div id="cat-container">
+        <!-- Cat blocks will be dynamically added here -->
+    </div>
+
+    <script>
+        // Dummy data for demonstration
+        const cats = [
+            { name: 'Fluffy', breed: 'Persian', age: 3 },
+            { name: 'Whiskers', breed: 'Siamese', age: 2 },
+            { name: 'Garfield', breed: 'Tabby', age: 5 }
+            // Add more cat objects as needed
+        ];
+
+        // Function to create a cat block
+        function createCatBlock(cat) {
+            const block = document.createElement('div');
+            block.classList.add('cat-block');
+            block.innerHTML = `
+                <h2>${cat.name}</h2>
+                <p><strong>Breed:</strong> ${cat.breed}</p>
+                <p><strong>Age:</strong> ${cat.age}</p>
+            `;
+            return block;
+        }
+
+        // Function to render cat blocks
+        function renderCats() {
+            const catContainer = document.getElementById('cat-container');
+            catContainer.innerHTML = ''; // Clear previous content
+
+            // Iterate through each cat and create a block
+            cats.forEach(cat => {
+                const catBlock = createCatBlock(cat);
+                catContainer.appendChild(catBlock);
+            });
+        }
+
+        // Call renderCats to initially render the cats
+        renderCats();
+    </script>
+</body>
+</html>

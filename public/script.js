@@ -102,9 +102,3 @@ function likeCat(imageUrl, breed) {
 }
 
 // Initially load cat images when the page loads
-window.onload = function () {
-  refreshCatImageAndSwipe(
-    "https://api.thecatapi.com/v1/images/search?limit=2&has_breeds=1",
-    ""
-  );
-};
