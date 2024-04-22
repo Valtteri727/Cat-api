@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat-app</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div class="mobile-container" id="image-container">
+    <div class="cat-stack">
+        <img class="cat-image first-cat" src="" alt="Cat Image" />
+        <img class="cat-image second-cat" src="" alt="Cat Image" />
+    </div>
+    <div class="button-container">
+        <button class="heart-button" onclick="refreshCatImageAndSwipe('https://api.thecatapi.com/v1/images/search?limit=2&has_breeds=1', 'left');">
+            <img src="heart-icon.png" alt="Heart Icon" />
+        </button>
+        <button class="broken-heart-button" onclick="refreshCatImageAndSwipe('https://api.thecatapi.com/v1/images/search?limit=2&has_breeds=1', 'right');">
+            <img src="broken-heart-icon.png" alt="Broken Heart Icon" />
+        </button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

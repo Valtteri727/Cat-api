@@ -1,0 +1,62 @@
+/* Style for mobile phone container */
+.mobile-container {
+    position: relative;
+    width: 300px; /* Adjust the width according to your preference */
+    height: 600px; /* Adjust the height according to your preference */
+    background-color: #000;
+    border-radius: 40px; /* Adjust the border-radius for curved corners */
+    margin: 50px auto;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add shadow effect */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Style for the button container */
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+/* Style for heart button */
+.heart-button, .broken-heart-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Style for heart button image */
+.heart-button img, .broken-heart-button img {
+    width: 40px;
+    height: 40px;
+}
+
+/* Style for the cat stack */
+.cat-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Style for cat image */
+.cat-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Style for first cat image */
+.first-cat {
+    z-index: 2;
+}
+
+/* Style for second cat image */
+.second-cat {
+    z-index: 1;
+}
