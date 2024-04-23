@@ -44,6 +44,7 @@ function refreshCatImageAndSwipe(url, direction) {
         const heartButton = document.querySelector(".heart-button");
         heartButton.addEventListener("click", () => {
           likeCat(imageUrl1, breed, description, origin); // Call a function to like the cat image when the button is clicked
+          fetchLikedCats(imageUrl, breed, description, origin);
         });
 
         const BrokenHeartButton = document.querySelector(
@@ -98,6 +99,24 @@ function likeCat(imageUrl, breed, description, origin) {
         console.log("Cat image liked successfully");
       } else {
         console.error("Failed to like the cat image");
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
+function fetchLikedCats(imageUrl, breed, description, origin) {
+  fetch("/liked-cats", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ imageUrl, breed, description, origin }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("Cat info fetched succesfully");
+      } else {
+        console.error("Failed to fetch information of the cats");
       }
     })
     .catch((error) => console.error("Error:", error));

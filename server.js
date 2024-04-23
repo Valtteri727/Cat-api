@@ -113,13 +113,13 @@ app.post("/api/dislike-cat", async (req, res) => {
         liked: false,
       });
 
-      console.log("Cat disliked (new entry created):", existingCat);
+      //console.log("Cat disliked (new entry created):", existingCat);
       return res
         .status(200)
         .json({ message: "Cat disliked (new entry created)" });
     }
   } catch (error) {
-    console.error("Error disliking the cat:", error);
+    //console.error("Error disliking the cat:", error);
     res.status(500).json({ error: "Failed to dislike the cat" });
   }
 });
@@ -133,11 +133,11 @@ app.post("/api/like-cat", async (req, res) => {
 
     if (existingCat) {
       if (existingCat.liked) {
-        console.log("Cat already liked:", existingCat);
+        //console.log("Cat already liked:", existingCat);
         return res.status(200).json({ message: "Cat already liked" });
       } else {
         // If the cat is found but not already liked (liked is false), do not change the liked value
-        console.log("Cat is not liked (liked value is false):", existingCat);
+        //console.log("Cat is not liked (liked value is false):", existingCat);
         return res
           .status(200)
           .json({ message: "Cat is not changed (already disliked)" });
@@ -151,7 +151,7 @@ app.post("/api/like-cat", async (req, res) => {
         origin,
         liked: true,
       });
-      console.log("New cat liked and saved:", newLikedCat);
+      //console.log("New cat liked and saved:", newLikedCat);
 
       res.status(201).json({
         message: "Cat liked and saved to the database",
@@ -167,11 +167,11 @@ app.post("/api/like-cat", async (req, res) => {
 // Endpoint to retrieve liked cats from the database
 app.get("/liked-cats", async (req, res) => {
   try {
-    const likedCatsData = await likedCats.find(); // Retrieve all liked cats from the database
-    console.log("Liked Cats:", likedCatsData); // Log the retrieved data to the console
+    const likedCatsData = await likedCats.find({ liked: true }); // Search cats based on liked value
+    //console.log("Liked Cats:", likedCatsData); // Log the retrieved data to the console
     res.json(likedCatsData); // Send the retrieved data as a JSON response
   } catch (error) {
-    console.error("Error retrieving liked cats:", error);
+    //console.error("Error retrieving liked cats:", error);
     res.status(500).json({ error: "Failed to retrieve liked cats" });
   }
 });
