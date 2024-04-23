@@ -189,8 +189,8 @@ app.post("/submit-form", async (req, res) => {
       port: 587,
       secure: false,
       auth: {
-        user: "joni22005@student.hamk.fi",
-        pass: "Ccyj3QGiin3ommgF",
+        user: process.env.user,
+        pass: process.env.password,
       },
     });
 
