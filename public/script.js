@@ -37,18 +37,20 @@ function refreshCatImageAndSwipe(url, direction) {
         };
 
         let breed = data[0].breeds[0].name;
+        let description = data[0].breeds[0].description;
+        let origin = data[0].breeds[0].origin;
 
         // Attach event listener to the like button for the current image
         const heartButton = document.querySelector(".heart-button");
         heartButton.addEventListener("click", () => {
-          likeCat(imageUrl1, breed); // Call a function to like the cat image when the button is clicked
+          likeCat(imageUrl1, breed, description, origin); // Call a function to like the cat image when the button is clicked
         });
 
         const BrokenHeartButton = document.querySelector(
           ".broken-heart-button"
         );
         BrokenHeartButton.addEventListener("click", () => {
-          dislikeCat(imageUrl1, breed); // Call a function to like the cat image when the button is clicked
+          dislikeCat(imageUrl1, breed, description, origin); // Call a function to like the cat image when the button is clicked
         });
 
         // Preload the next image
@@ -64,13 +66,13 @@ function refreshCatImageAndSwipe(url, direction) {
 
 // Function to like an image
 // Function to dislike a cat image
-function dislikeCat(imageUrl, breed) {
+function dislikeCat(imageUrl, breed, description, origin) {
   fetch("/api/dislike-cat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ imageUrl, breed }),
+    body: JSON.stringify({ imageUrl, breed, description, origin }),
   })
     .then((response) => {
       if (response.ok) {
@@ -83,13 +85,13 @@ function dislikeCat(imageUrl, breed) {
 }
 
 // Function to like an image
-function likeCat(imageUrl, breed) {
+function likeCat(imageUrl, breed, description, origin) {
   fetch("/api/like-cat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ imageUrl, breed }),
+    body: JSON.stringify({ imageUrl, breed, description, origin }),
   })
     .then((response) => {
       if (response.ok) {

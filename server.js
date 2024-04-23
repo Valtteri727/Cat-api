@@ -74,6 +74,8 @@ app.get("/api/cats", async (req, res) => {
       return {
         imageUrl: cat.url,
         breed: cat.breeds.name,
+        description: cat.breeds.description,
+        origin: cat.breeds.origin
       };
     });
 
@@ -94,10 +96,10 @@ app.get("/api/cats", async (req, res) => {
 
 app.post("/api/dislike-cat", async (req, res) => {
   try {
-    const { imageUrl, breed } = req.body;
+    const { imageUrl, breed, description, origin } = req.body;
 
     // Check if this cat info exists in likedCats collection
-    let existingCat = await likedCats.findOne({ imageUrl, breed });
+    let existingCat = await likedCats.findOne({ imageUrl, breed, description, origin });
 
     if (existingCat) {
       return res.status(200).json({ message: "Cat disliked" });
@@ -106,6 +108,8 @@ app.post("/api/dislike-cat", async (req, res) => {
       existingCat = await likedCats.create({
         imageUrl,
         breed,
+        description,
+        origin,
         liked: false,
       });
 
@@ -122,10 +126,10 @@ app.post("/api/dislike-cat", async (req, res) => {
 
 app.post("/api/like-cat", async (req, res) => {
   try {
-    const { imageUrl, breed } = req.body;
+    const { imageUrl, breed, description, origin } = req.body;
 
     // Check if this cat info already exists in likedCats collection
-    const existingCat = await likedCats.findOne({ imageUrl, breed });
+    const existingCat = await likedCats.findOne({ imageUrl, breed, description, origin });
 
     if (existingCat) {
       if (existingCat.liked) {
@@ -143,6 +147,8 @@ app.post("/api/like-cat", async (req, res) => {
       const newLikedCat = await likedCats.create({
         imageUrl,
         breed,
+        description,
+        origin,
         liked: true,
       });
       console.log("New cat liked and saved:", newLikedCat);
