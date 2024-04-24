@@ -4,6 +4,7 @@ const fetch = require("node-fetch");
 const exphbs = require("express-handlebars");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const nodemailer = require("nodemailer");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -48,6 +49,11 @@ app.use(express.static(path.join(__dirname, "public")));
 // Serve the index.hbs file located in the 'views' directory
 app.get("/", (req, res) => {
   res.render("index", { layout: false });
+});
+
+// Serve likedcats.hbs when /likedcats path is accessed
+app.get("/likedcats", (req, res) => {
+  res.render("likedcats", { layout: false }); // Assuming likedcats.hbs is in your views directory
 });
 
 // Sample endpoint to fetch cat images
@@ -164,14 +170,64 @@ app.post("/api/like-cat", async (req, res) => {
   }
 });
 
-// Endpoint to retrieve liked cats from the database
-app.get("/liked-cats", async (req, res) => {
+// Add a new route to fetch liked cats data
+app.get("/api/liked-cats", async (req, res) => {
   try {
-    const likedCatsData = await likedCats.find({ liked: true }); // Search cats based on liked value
-    //console.log("Liked Cats:", likedCatsData); // Log the retrieved data to the console
-    res.json(likedCatsData); // Send the retrieved data as a JSON response
+    // Fetch all liked cats from the database
+    const likedCatsData = await likedCats.find({ liked: true });
+
+    res.status(200).json(likedCatsData);
   } catch (error) {
-    //console.error("Error retrieving liked cats:", error);
-    res.status(500).json({ error: "Failed to retrieve liked cats" });
+    console.error("Error fetching liked cats:", error);
+    res.status(500).json({ error: "Failed to fetch liked cats" });
+  }
+});
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.get("/show-form", (req, res) => {
+  res.render("form");
+});
+
+app.post("/submit-form", async (req, res) => {
+  const { email } = req.body;
+  console.log(email);
+  try {
+    // Retrieve cat data from MongoDB
+    const catsData = await likedCats.find({ liked: { $eq: true } }); // Example: Retrieve all cat data
+
+    // Prepare email text using retrieved data
+    let emailText = "Here are the cats you were interested in:\n";
+    catsData.forEach((cat) => {
+      emailText += `Breed: ${cat.breed}\nImage URL: ${cat.imageUrl}\n\n`;
+    });
+
+    // Create reusable transporter object using SMTP transport with SMTP2GO
+    let transporter = nodemailer.createTransport({
+      host: "smtp.smtp2go.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.user,
+        pass: process.env.password,
+      },
+    });
+
+    // Define email message
+    let mailOptions = {
+      from: "joni22005@student.hamk.fi",
+      to: email,
+      subject: "Adoption request",
+      text: emailText, // Use formatted email text with cat details
+    };
+
+    // Send email
+    let info = await transporter.sendMail(mailOptions);
+    console.log("Email sent:", info.messageId);
+    res.send("Email sent successfully!");
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).send("Failed to send email.");
   }
 });

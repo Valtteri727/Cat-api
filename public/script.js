@@ -44,7 +44,6 @@ function refreshCatImageAndSwipe(url, direction) {
         const heartButton = document.querySelector(".heart-button");
         heartButton.addEventListener("click", () => {
           likeCat(imageUrl1, breed, description, origin); // Call a function to like the cat image when the button is clicked
-          fetchLikedCats(imageUrl, breed, description, origin);
         });
 
         const BrokenHeartButton = document.querySelector(
@@ -104,23 +103,36 @@ function likeCat(imageUrl, breed, description, origin) {
     .catch((error) => console.error("Error:", error));
 }
 
-function fetchLikedCats(imageUrl, breed, description, origin) {
-  fetch("/liked-cats", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ imageUrl, breed, description, origin }),
-  })
-    .then((response) => {
-      if (response.ok) {
-        console.log("Cat info fetched succesfully");
-      } else {
-        console.error("Failed to fetch information of the cats");
-      }
-    })
-    .catch((error) => console.error("Error:", error));
-}
+// // Fetch liked cats data when the page loads
+// window.addEventListener("load", () => {
+//   fetch("/api/liked-cats")
+//     .then((response) => response.json())
+//     .then((data) => {
+//       // Iterate over each liked cat and create HTML elements to display them
+//       data.forEach((cat) => {
+//         const catContainer = document.getElementById("cat-container");
+
+//         // Create a div element for the cat block
+//         const catBlock = document.createElement("div");
+//         catBlock.classList.add("cat-block");
+
+//         // Create HTML content for the cat block
+//         const catContent = `
+//           <img src="${cat.imageUrl}" alt="Cat">
+//           <h2>${cat.breed}</h2>
+//           <p>${cat.description}</p>
+//           <p>Origin: ${cat.origin}</p>
+//         `;
+
+//         // Set the HTML content to the cat block
+//         catBlock.innerHTML = catContent;
+
+//         // Append the cat block to the cat container
+//         catContainer.appendChild(catBlock);
+//       });
+//     })
+//     .catch((error) => console.error("Error fetching liked cats:", error));
+// });
 
 // Initially load cat images when the page loads
 window.onload = function () {
