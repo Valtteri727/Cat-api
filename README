@@ -1,1 +1,2 @@
 We decided to create a page for cat adoption, using a like and dislike system. The cat information gets fetched from an open source API, the cat API. 
+All the cats user decides to like, gets fetched and moved to their own page. In this page, the user can look up the cats they have liked, get extra information of them and have the possibility to have their wanted cats information sent to them via emai.
