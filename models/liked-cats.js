@@ -9,7 +9,15 @@ const likedCatsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  liked: { type: Boolean, default: null },
+  description: {
+    type: String
+  },
+  origin: {
+    type: String
+  },
+  liked: { 
+    type: Boolean, 
+    default: null },
 });
 
 module.exports = mongoose.model("likedCats", likedCatsSchema);
