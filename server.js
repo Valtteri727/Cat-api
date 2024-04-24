@@ -200,7 +200,7 @@ app.post("/submit-form", async (req, res) => {
     // Prepare email text using retrieved data
     let emailText = "Here are the cats you were interested in:\n";
     catsData.forEach((cat) => {
-      emailText += `Breed: ${cat.breed}\nImage URL: ${cat.imageUrl}\n\n`;
+      emailText += `Breed: ${cat.breed}\nDesciption: ${cat.description}\nOrigin: ${cat.origin}\nImage URL: ${cat.imageUrl}\n\n`;
     });
 
     // Create reusable transporter object using SMTP transport with SMTP2GO
