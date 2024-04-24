@@ -30,46 +30,45 @@
         <!-- Liked cats data will be dynamically inserted here -->
     </div>
 
-<script>
-    // Fetch liked cats data when the page loads
-    window.addEventListener("load", () => {
-    fetch("/api/liked-cats")
-        .then((response) => response.json())
-        .then((data) => {
-        // Iterate over each liked cat and create HTML elements to display them
-        data.forEach((cat) => {
-            const catContainer = document.getElementById("cat-container");
+    <script>
+        // Fetch liked cats data when the page loads
+        window.addEventListener("load", () => {
+        fetch("/api/liked-cats")
+            .then((response) => response.json())
+            .then((data) => {
+            // Iterate over each liked cat and create HTML elements to display them
+            data.forEach((cat) => {
+                const catContainer = document.getElementById("cat-container");
 
-            // Create a div element for the cat block
-            const catBlock = document.createElement("div");
-            catBlock.classList.add("cat-block");
+                // Create a div element for the cat block
+                const catBlock = document.createElement("div");
+                catBlock.classList.add("cat-block");
 
-            // Create HTML content for the cat block
-            const catContent = `
-            <img src="${cat.imageUrl}" alt="Cat">
-            <h2>${cat.breed}</h2>
-            <p>${cat.description}</p>
-            <p>Origin: ${cat.origin}</p>
-            <form action="/submit-form" method="POST">
-            <div>
-                <label for="emailInput">Email:</label>
-                <input type="email" id="emailInput" name="email" required>
-            </div>
-            <button type="submit">Send Email</button>
-            </form>
-            `;
+                // Create HTML content for the cat block
+                const catContent = `
+                <img src="${cat.imageUrl}" alt="Cat">
+                <h2>${cat.breed}</h2>
+                <p>${cat.description}</p>
+                <p>Origin: ${cat.origin}</p>
+                <form action="/submit-form" method="POST">
+                <div>
+                    <label for="emailInput">Email:</label>
+                    <input type="email" id="emailInput" name="email" required>
+                </div>
+                <button type="submit">Send Email</button>
+                </form>
+                `;
 
-            // Set the HTML content to the cat block
-            catBlock.innerHTML = catContent;
+                // Set the HTML content to the cat block
+                catBlock.innerHTML = catContent;
 
-            // Append the cat block to the cat container
-            catContainer.appendChild(catBlock);
+                // Append the cat block to the cat container
+                catContainer.appendChild(catBlock);
+            });
+            })
+            .catch((error) => console.error("Error fetching liked cats:", error));
         });
-        })
-        .catch((error) => console.error("Error fetching liked cats:", error));
-    });
-
-</script>
+    </script>
 
 </body>
 </html>
