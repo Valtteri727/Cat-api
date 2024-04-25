@@ -7,17 +7,17 @@ const likedCatsSchema = new mongoose.Schema({
   },
   breed: {
     type: String,
-    required: true,
   },
   description: {
-    type: String
+    type: String,
   },
   origin: {
-    type: String
+    type: String,
   },
-  liked: { 
-    type: Boolean, 
-    default: null },
+  liked: {
+    type: Boolean,
+    default: null,
+  },
 });
 
 module.exports = mongoose.model("likedCats", likedCatsSchema);

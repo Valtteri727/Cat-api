@@ -81,7 +81,7 @@ app.get("/api/cats", async (req, res) => {
         imageUrl: cat.url,
         breed: cat.breeds.name,
         description: cat.breeds.description,
-        origin: cat.breeds.origin
+        origin: cat.breeds.origin,
       };
     });
 
@@ -105,7 +105,12 @@ app.post("/api/dislike-cat", async (req, res) => {
     const { imageUrl, breed, description, origin } = req.body;
 
     // Check if this cat info exists in likedCats collection
-    let existingCat = await likedCats.findOne({ imageUrl, breed, description, origin });
+    let existingCat = await likedCats.findOne({
+      imageUrl,
+      breed,
+      description,
+      origin,
+    });
 
     if (existingCat) {
       return res.status(200).json({ message: "Cat disliked" });
@@ -135,7 +140,12 @@ app.post("/api/like-cat", async (req, res) => {
     const { imageUrl, breed, description, origin } = req.body;
 
     // Check if this cat info already exists in likedCats collection
-    const existingCat = await likedCats.findOne({ imageUrl, breed, description, origin });
+    const existingCat = await likedCats.findOne({
+      imageUrl,
+      breed,
+      description,
+      origin,
+    });
 
     if (existingCat) {
       if (existingCat.liked) {
@@ -191,17 +201,11 @@ app.get("/show-form", (req, res) => {
 });
 
 app.post("/submit-form", async (req, res) => {
-  const { email } = req.body;
+  const { email, breed, description, origin, imageUrl } = req.body;
   console.log(email);
   try {
-    // Retrieve cat data from MongoDB
-    const catsData = await likedCats.find({ liked: { $eq: true } }); // Example: Retrieve all cat data
-
-    // Prepare email text using retrieved data
-    let emailText = "Here are the cats you were interested in:\n";
-    catsData.forEach((cat) => {
-      emailText += `Breed: ${cat.breed}\nDesciption: ${cat.description}\nOrigin: ${cat.origin}\nImage URL: ${cat.imageUrl}\n\n`;
-    });
+    let emailText = "Here is the cat you were interested in:\n";
+    emailText += `Breed: ${breed}\nDescription: ${description}\nOrigin: ${origin}\nImage URL: ${imageUrl}\n\n`;
 
     // Create reusable transporter object using SMTP transport with SMTP2GO
     let transporter = nodemailer.createTransport({
@@ -225,7 +229,9 @@ app.post("/submit-form", async (req, res) => {
     // Send email
     let info = await transporter.sendMail(mailOptions);
     console.log("Email sent:", info.messageId);
-    res.send("Email sent successfully!");
+
+    // Respond to the client indicating success
+    res.status(200).send("Email sent successfully!");
   } catch (error) {
     console.error("Error sending email:", error);
     res.status(500).send("Failed to send email.");
