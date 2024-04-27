@@ -1,4 +1,3 @@
-/* Style for the header */
 .header {
     position: fixed;
     top: 0;
@@ -8,7 +7,7 @@
     padding: 0px 10px;
     z-index: 100;
     display: flex;
-    justify-content: space-between; /* Align items to the left and right */
+    justify-content: space-between;
     margin-bottom: 10px;
 }
 
@@ -17,10 +16,10 @@
     color: white;
     size-adjust: 100;
 }
-/* Style for the logo */
+
 #logo {
-    width: 16vw; /* Adjust the width of the logo */
-    height: auto; /* Maintain aspect ratio */
+    width: 16vw;
+    height: auto;
 }
 
 .header nav ul {
@@ -40,49 +39,46 @@
     display: inline-block;
     padding: 10px 20px;
     border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-    transition: background-color 0.3s ease; /* Smooth transition */
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease;
 }
 
 .header nav ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.3); /* Lighter background on hover */
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Style for mobile phone container */
 .mobile-container {
     position: relative;
-    width: 310px; /* Adjust the width according to your preference */
-    height: 610px; /* Adjust the height according to your preference */
+    width: 310px;
+    height: 610px;
     background-color: #000;
-    border-radius: 40px; /* Adjust the border-radius for curved corners */
+    border-radius: 40px;
     margin: 30px auto;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add shadow effect */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 10px solid #302f2f; /* Add border with gray color */
+    border: 10px solid #302f2f;
     margin-top: 75px;
 }
 .speaker-spot {
     position: absolute;
-    top: 10px; /* Adjust the top position according to your preference */
-    left: 50%; /* Center the speaker spot horizontally */
-    transform: translateX(-50%); /* Center the speaker spot horizontally */
-    width: 30px; /* Adjust the width of the speaker spot */
-    height: 5px; /* Adjust the height of the speaker spot */
-    background-color: #382c2c; /* Color of the speaker spot */
-    border-radius: 30%; /* Rounded shape for the speaker spot */
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 5px;
+    background-color: #382c2c;
+    border-radius: 30%;
 }
 
-/* Style for the button container */
 .button-container {
     display: flex;
     justify-content: space-around;
     padding: 20px;
 }
 
-/* Style for heart button */
 .heart-button, .broken-heart-button {
     background-color: transparent;
     
@@ -90,13 +86,11 @@
     cursor: pointer;
 }
 
-/* Style for heart button image */
 .heart-button img, .broken-heart-button img {
     width: 40px;
     height: 40px;
 }
 
-/* Style for the cat stack */
 .cat-stack {
     position: relative;
     width: 100%;
@@ -104,7 +98,6 @@
     overflow: hidden;
 }
 
-/* Style for cat image */
 .cat-image {
     position: absolute;
     top: 0;
@@ -112,30 +105,24 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    
 }
 
-/* Style for first cat image */
 .first-cat {
     z-index: 2;
 }
 
-/* Style for second cat image */
 .second-cat {
     z-index: 1;
 }
 
 
-/* Style for the body */
 body {
-    background-color: #aed9e0; /* Pastel baby blue background */
-    background-image: url('paw-print.png'); /* Path to paw print image */
-    background-repeat: repeat; /* Repeat the paw print image */
-    background-position: center; /* Center the background */
+    background-color: #aed9e0;
+    background-image: url('paw-print.png');
+    background-repeat: repeat;
+    background-position: center;
 }
 
-/* Style for the paw prints */
-/* Adjust the color and size as needed */
 body::after {
     content: '';
     position: fixed;
@@ -143,15 +130,12 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('paw-print.png'); /* Path to paw print image */
-    background-repeat: repeat; /* Repeat the paw print image */
-    background-size: 50px; /* Adjust the size of the paw prints */
-    opacity: 0.05; /* Adjust opacity if needed */
-    pointer-events: none; /* Ignore mouse events on the paw prints */
+    background-image: url('paw-print.png');
+    background-repeat: repeat;
+    background-size: 50px;
+    opacity: 0.05;
+    pointer-events: none;
 }
-
-
-/* Your existing CSS styles */
 
 .loading-screen {
     position: fixed;
@@ -159,7 +143,7 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(166, 149, 149, 0.7); /* Semi-transparent white background */
+    background-color: rgba(166, 149, 149, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;

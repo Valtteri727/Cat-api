@@ -6,7 +6,6 @@
     <title>Liked Cats</title>
     <link rel="stylesheet" href="main.css">
     <style>
-        /* Basic styling for the cat blocks */
         .cat-block {
             border: 1px solid #ccc;
             padding: 20px;
@@ -17,21 +16,18 @@
             float: left;
             padding: 20px;
             margin-top: 2vw;
-            margin-right: 20px; /* Adjust spacing between image and text */
+            margin-right: 20px;
         }
         h2, p, form {
-            margin-left: 20px; /* Add spacing to the left of text elements */
+            margin-left: 20px;
         }
         h2 {
             margin-top: 3vw;
         }
 
         form {
-            clear: both; /* Clear the float to ensure the form appears below the image */
+            clear: both;
         }
-
-
-
     </style>
 </head>
 <body>
@@ -40,34 +36,34 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/likedcats.hbs">Liked Cats</a></li>
+            <li><a href="/likedcats">Liked Cats</a></li>
         </ul>
     </nav>
 </div>
 
     <div id="cat-container">
-        <!-- Liked cats data will be dynamically inserted here -->
+        <!-- Kissat ladataan tähän -->
     </div>
 
  <script>
-        // Function to handle form submission
+        // Funktio sähköpostin lähettämiseen
         const handleFormSubmit = async (event) => {
-            event.preventDefault(); // Prevent the default form submission
+            event.preventDefault();
 
-            const form = event.target; // Get the form element
-            const emailInput = form.querySelector('#emailInput'); // Get the email input field
+            const form = event.target;
+            const emailInput = form.querySelector('#emailInput'); // Sähköpostin kenttä
 
-            // Extract cat data from hidden fields
+            // Haetaan kyseisen kissan tiedot lomaketta varten
             const breed = form.querySelector('input[name="breed"]').value;
             const description = form.querySelector('input[name="description"]').value;
             const origin = form.querySelector('input[name="origin"]').value;
             const imageUrl = form.querySelector('input[name="imageUrl"]').value;
 
-            // Extract email value
+            // Haetaan talteen sähköpostin tiedot
             const email = emailInput.value;
 
             try {
-                // Send email data to the server
+                // Viedään sähköpostin tiedot serverille
                 const response = await fetch("/submit-form", {
                     method: "POST",
                     headers: {
@@ -83,12 +79,12 @@
                 });
 
                 if (response.ok) {
-                    // Display success message
+                    // Jos sähköpostin lähetys onnistuu, näytetään viesti
                     const confirmationMessage = document.createElement('span');
                     confirmationMessage.textContent = 'Email sent';
                     emailInput.insertAdjacentElement('afterend', confirmationMessage);
 
-                    // Optionally, you can clear the email input field after sending
+                    // Tekstikentän tiedot tyhjennetään
                     emailInput.value = '';
                 } else {
                     throw new Error("Failed to send email");
@@ -96,28 +92,28 @@
             } catch (error) {
                 console.error("Error sending email:", error);
 
-                // Display error message
+                // Näytetään virheilmoitus, jos sähköpostia ei onnistuttu lähettämään
                 const errorMessage = document.createElement('span');
                 errorMessage.textContent = 'Failed to send email';
-                errorMessage.style.color = 'red'; // Optional: style the error message
+                errorMessage.style.color = 'red'; // Virheilmoituksen tyyli
                 emailInput.insertAdjacentElement('afterend', errorMessage);
             }
         };
 
-        // Fetch liked cats data when the page loads
+        // Haetaan kissojen tiedot, kun sivu latautuu
         window.addEventListener("load", () => {
             fetch("/api/liked-cats")
                 .then((response) => response.json())
                 .then((data) => {
-                    // Iterate over each liked cat and create HTML elements to display them
+                    // Käydään läpi kaikki kissat, ja näytetään ne sivulla
                     data.forEach((cat) => {
                         const catContainer = document.getElementById("cat-container");
 
-                        // Create a div element for the cat block
+                        // Yhden kissan blokki
                         const catBlock = document.createElement("div");
                         catBlock.classList.add("cat-block");
 
-                        // Create HTML content for the cat block
+                        // Blokin tiedot
                         const catContent = `
                             <img id="cat-image-element" src="${cat.imageUrl}" alt="Cat">
                             <h2>${cat.breed}</h2>
@@ -137,10 +133,8 @@
                             </form>
                         `;
 
-                        // Set the HTML content to the cat block
                         catBlock.innerHTML = catContent;
 
-                        // Append the cat block to the cat container
                         catContainer.appendChild(catBlock);
                     });
                 })

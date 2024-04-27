@@ -5,28 +5,26 @@ const loadingScreen = document.getElementById('loadingScreen');
 const currentCatImage = document.querySelector(".first-cat");
 const nextCatImage = document.querySelector(".second-cat");
 
-// Function to show the loading screen
+// Luotiin latausikkuna sitä varten, että oikean kissan tiedot menisivät tietokantaan
+// Aina sivulle mentäessä, ongelmana oli, ettei oikean kissan tiedot menneet tietokantaan siitä tykättäessä. Tämä korjaa sen
 function showLoadingScreen() {
     loadingScreen.style.display = 'flex';
 }
 
-// Function to hide the loading screen
 function hideLoadingScreen() {
     loadingScreen.style.display = 'none';
 }
 
-// Attach event listener to the like button for the current image
+// Event listener sydän-painikekkeeseen (tykkäys-painike)
 const heartButton = document.querySelector(".heart-button");
 heartButton.addEventListener("click", likeCurrentCat);
 
-// Attach event listener to the dislike button for the current image
+// Event listener särkynyt sydän- painikkeeseen (ei tykkäys- painike)
 const brokenHeartButton = document.querySelector(".broken-heart-button");
 brokenHeartButton.addEventListener("click", dislikeCurrentCat);
 
-// Function to fetch new cat images and swipe
+// Funktio uuden kissan hakemiseen ja pyyhkäisemiseen
 function refreshCatImageAndSwipe(url, direction) {
-    
-
     fetch(url, {
         headers: {
             "x-api-key": api_key,
@@ -52,7 +50,7 @@ function refreshCatImageAndSwipe(url, direction) {
                 }
                 setTimeout(() => {
                     currentCatImage.src = nextCatImage.src;
-                    currentCatImage.setAttribute('data-breed', data[0].breeds[0].name); // origin = data[0].breeds[0].origin;
+                    currentCatImage.setAttribute('data-breed', data[0].breeds[0].name);
                     currentCatImage.setAttribute('data-description', data[0].breeds[0].description)
                     currentCatImage.setAttribute('data-origin', data[0].breeds[0].origin)
                     currentCatImage.style.transition = "none";
@@ -60,41 +58,41 @@ function refreshCatImageAndSwipe(url, direction) {
                 }, 1000);
             };
 
-            // Preload the next image
+            // Ladataan seuraava kuva valmiiksi
             nextCatImage.src = direction === "left" ? imageUrl1 : imageUrl2;
         } else {
             throw new Error("Insufficient data received from API");
         }
     })
     .then(() => {
-        // Hide loading screen after fetching cat images
+        // Piilotetaan latausikkuna, kun kissojen kuvat ovat ladattu
         hideLoadingScreen();
     })
     .catch((error) => {
         console.error("Error fetching images:", error);
-        hideLoadingScreen(); // Hide loading screen in case of error
+        hideLoadingScreen();
     });
 }
 
-// Function to like the current cat image
+// Funktio kissan tykkäämiselle (tämän hetkinen kissa)
 function likeCurrentCat() {
     const imageUrl = currentCatImage.src;
-    const breed = currentCatImage.getAttribute('data-breed'); // Get the breed from the data attribute
+    const breed = currentCatImage.getAttribute('data-breed');
     const description = currentCatImage.getAttribute('data-description');
     const origin = currentCatImage.getAttribute('data-origin');
     likeCat(imageUrl, breed, description, origin);
 }
 
-// Function to dislike the current cat image
+// Funtio kissan ei tykkäämiselle (tämän hetkinen kissa)
 function dislikeCurrentCat() {
     const imageUrl = currentCatImage.src;
-    const breed = currentCatImage.getAttribute('data-breed'); // Get the breed from the data attribute
+    const breed = currentCatImage.getAttribute('data-breed');
     const description = currentCatImage.getAttribute('data-description');
     const origin = currentCatImage.getAttribute('data-origin');
     dislikeCat(imageUrl, breed, description, origin);
 }
 
-// Function to dislike a cat image
+// Funktio kissan ei tykkäämiselle
 function dislikeCat(imageUrl, breed, description, origin ) {
     fetch("/api/dislike-cat", {
         method: "POST",
@@ -113,7 +111,7 @@ function dislikeCat(imageUrl, breed, description, origin ) {
     .catch((error) => console.error("Error:", error));
 }
 
-// Function to like an image
+// Funktio kissan tykkäämiselle
 function likeCat(imageUrl, breed, description, origin) {
     fetch("/api/like-cat", {
         method: "POST",
@@ -132,11 +130,7 @@ function likeCat(imageUrl, breed, description, origin) {
     .catch((error) => console.error("Error:", error));
 }
 
-// Initially load cat images when the page loads
 window.onload = function() {
-    // Initially show the loading screen
     showLoadingScreen();
-
-    // Fetch cat images and swipe
     refreshCatImageAndSwipe('https://api.thecatapi.com/v1/images/search?limit=2&has_breeds=1', 'left');
 };

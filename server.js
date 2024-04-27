@@ -9,7 +9,7 @@ const nodemailer = require("nodemailer");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Set up middleware to parse JSON requests
+// Middleware JSON pyyntöjen parsimiseen
 app.use(express.json());
 
 const dbURI =
@@ -34,7 +34,7 @@ mongoose
 
 const likedCats = require("./models/liked-cats");
 
-// Set up Handlebars view engine
+// Handlebars view engine
 app.engine(
   "hbs",
   exphbs.engine({
@@ -43,20 +43,17 @@ app.engine(
 );
 app.set("view engine", "hbs");
 
-// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 
-// Serve the index.hbs file located in the 'views' directory
 app.get("/", (req, res) => {
   res.render("index", { layout: false });
 });
 
-// Serve likedcats.hbs when /likedcats path is accessed
 app.get("/likedcats", (req, res) => {
-  res.render("likedcats", { layout: false }); // Assuming likedcats.hbs is in your views directory
+  res.render("likedcats", { layout: false });
 });
 
-// Sample endpoint to fetch cat images
+// Endpoint kissojen tietojen hakemiseen
 app.get("/api/cats", async (req, res) => {
   const api_key =
     "live_d9e8xU3Yj9skslxxiyCSgbqtcwxGgDOAsEDF3cF23JepG2xV3HdJLsRSmoJ8znv6";
@@ -75,7 +72,7 @@ app.get("/api/cats", async (req, res) => {
 
     const fetchedCatData = await response.json();
 
-    // Extract relevant information from the API response
+    // Haetaan halutut tiedot cat API:sta
     const catInfo = fetchedCatData.map((cat) => {
       return {
         imageUrl: cat.url,
@@ -92,7 +89,6 @@ app.get("/api/cats", async (req, res) => {
       console.error("Error saving cat info to database:", error);
     }
 
-    // Send the cat information back to the client
     res.json(catInfo);
   } catch (error) {
     console.error("Error fetching cat images:", error);
@@ -104,7 +100,7 @@ app.post("/api/dislike-cat", async (req, res) => {
   try {
     const { imageUrl, breed, description, origin } = req.body;
 
-    // Check if this cat info exists in likedCats collection
+    // Tarkistetaan, onko kissa jo olemassa tietokannassa
     let existingCat = await likedCats.findOne({
       imageUrl,
       breed,
@@ -115,7 +111,7 @@ app.post("/api/dislike-cat", async (req, res) => {
     if (existingCat) {
       return res.status(200).json({ message: "Cat disliked" });
     } else {
-      // Cat not found in likedCats, create a new entry with liked = false
+      // Jos kissaa ei ole vielä olemassa, luodaan se ja asetetaan liked: false
       existingCat = await likedCats.create({
         imageUrl,
         breed,
@@ -124,13 +120,11 @@ app.post("/api/dislike-cat", async (req, res) => {
         liked: false,
       });
 
-      //console.log("Cat disliked (new entry created):", existingCat);
       return res
         .status(200)
         .json({ message: "Cat disliked (new entry created)" });
     }
   } catch (error) {
-    //console.error("Error disliking the cat:", error);
     res.status(500).json({ error: "Failed to dislike the cat" });
   }
 });
@@ -139,7 +133,7 @@ app.post("/api/like-cat", async (req, res) => {
   try {
     const { imageUrl, breed, description, origin } = req.body;
 
-    // Check if this cat info already exists in likedCats collection
+    // Tarkistetaan, onko kissa jo olemassa tietokannassa
     const existingCat = await likedCats.findOne({
       imageUrl,
       breed,
@@ -149,17 +143,15 @@ app.post("/api/like-cat", async (req, res) => {
 
     if (existingCat) {
       if (existingCat.liked) {
-        //console.log("Cat already liked:", existingCat);
         return res.status(200).json({ message: "Cat already liked" });
       } else {
-        // If the cat is found but not already liked (liked is false), do not change the liked value
-        //console.log("Cat is not liked (liked value is false):", existingCat);
+        // Jos kissa löytyy tietokannasta, ja liked: false, arvoa ei muuteta
         return res
           .status(200)
           .json({ message: "Cat is not changed (already disliked)" });
       }
     } else {
-      // If the cat info does not exist, save a new liked cat entry
+      // Jos kissaa ei ole vielä olemassa, luodaan se ja asetetaan liked: true
       const newLikedCat = await likedCats.create({
         imageUrl,
         breed,
@@ -167,7 +159,6 @@ app.post("/api/like-cat", async (req, res) => {
         origin,
         liked: true,
       });
-      //console.log("New cat liked and saved:", newLikedCat);
 
       res.status(201).json({
         message: "Cat liked and saved to the database",
@@ -180,10 +171,10 @@ app.post("/api/like-cat", async (req, res) => {
   }
 });
 
-// Add a new route to fetch liked cats data
+// Lisätään uusi reitti kissojen tietojen hakemiselle
 app.get("/api/liked-cats", async (req, res) => {
   try {
-    // Fetch all liked cats from the database
+    // Haetaan kaikki kissojen tiedot tietokannasta, joista ollaan tykätty
     const likedCatsData = await likedCats.find({ liked: true });
 
     res.status(200).json(likedCatsData);
@@ -200,6 +191,7 @@ app.get("/show-form", (req, res) => {
   res.render("form");
 });
 
+// Sähköpostin reitti. Lähettää sähköpostissa sen kissan tiedot, josta on kiinnostunut
 app.post("/submit-form", async (req, res) => {
   const { email, breed, description, origin, imageUrl } = req.body;
   console.log(email);
@@ -207,7 +199,6 @@ app.post("/submit-form", async (req, res) => {
     let emailText = "Here is the cat you were interested in:\n";
     emailText += `Breed: ${breed}\nDescription: ${description}\nOrigin: ${origin}\nImage URL: ${imageUrl}\n\n`;
 
-    // Create reusable transporter object using SMTP transport with SMTP2GO
     let transporter = nodemailer.createTransport({
       host: "smtp.smtp2go.com",
       port: 587,
@@ -218,19 +209,18 @@ app.post("/submit-form", async (req, res) => {
       },
     });
 
-    // Define email message
+    // Sähköpostiviestin määritys
     let mailOptions = {
       from: "joni22005@student.hamk.fi",
       to: email,
       subject: "Adoption request",
-      text: emailText, // Use formatted email text with cat details
+      text: emailText, // Kissan tiedot
     };
 
-    // Send email
+    // Lähetetään sähköposti
     let info = await transporter.sendMail(mailOptions);
     console.log("Email sent:", info.messageId);
 
-    // Respond to the client indicating success
     res.status(200).send("Email sent successfully!");
   } catch (error) {
     console.error("Error sending email:", error);
